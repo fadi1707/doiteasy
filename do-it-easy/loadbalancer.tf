@@ -3,17 +3,17 @@ resource "aws_elb" "example-lb" {
     subnets = [aws_subnet.example-subnet-1.id, aws_subnet.example-subnet-2.id]
     security_groups = [aws_security_group.loadbalancer_sg.id]
     listener {
-        instance_port = 3000
-        instance_protocol = "tcp"
+        instance_port = var.instance["port"]
+        instance_protocol = var.protocol
         lb_port = 80
-        lb_protocol = "tcp"
+        lb_protocol = var.protocol
     }
     
     health_check {
         healthy_threshold = 2
         unhealthy_threshold = 2
         timeout = 3
-        target = "HTTP:3000/"
+        target = var.instance["target"]
         interval = 30
     }
 
